@@ -2,7 +2,7 @@
 
 Analyzed over **100,000 Ola ride bookings** using **Python**, **SQL**, and **Power BI** to uncover insights and improve ride completion rates. Applied machine learning and statistical techniques to reduce cancellations and optimize customer experience.
 
-![Project Banner]("ola_overall.png")
+![Project Banner](ola_overall.png)
 
 ## 📌 Project Description
 
