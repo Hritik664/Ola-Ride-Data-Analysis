@@ -1,0 +1,80 @@
+-- create database if not exists OLA;
+use OLA;
+-- drop table if exists bookings;
+
+select * from bookings;
+
+-- sql querries
+
+-- 1. Retrieve all successful bookings:
+select * from bookings 
+where Booking_Status = 'Success';
+
+-- with views
+create view Successful_Bookings as
+select * from bookings 
+where Booking_Status = 'Success';
+
+-- Retrieve from Views
+select * from Successful_Bookings;
+
+-- 2. Find the average ride distance for each vehicle type:
+select Vehicle_Type , round(avg(Ride_Distance),2) as 'ride distance' 
+from bookings group by Vehicle_Type;
+
+-- with views
+create view average_ride_distance as
+select Vehicle_Type , round(avg(Ride_Distance),2) as 'average ride distance' 
+from bookings group by Vehicle_Type;
+
+-- Retrieve from Views
+select * from average_ride_distance;
+
+-- 3. Get the total number of cancelled rides by customers:
+select count(Canceled_Rides_by_Customer) as 'total number of cancelled rides' 
+from bookings where Canceled_Rides_by_Customer is not null;
+select count(*) as 'total number of cancelled rides' 
+from bookings where Booking_Status = 'Canceled by Customer';
+
+-- with views
+create view canceled_rides_by_customer as
+select count(*) as 'total number of cancelled rides' 
+from bookings where Booking_Status = 'Canceled by Customer';
+
+-- Retrieve from Views
+select * from canceled_rides_by_customer;
+
+-- 4. List the top 5 customers who booked the highest number of rides:
+create view top_5 as 
+select Customer_ID, count(Booking_ID) as total_rides 
+from bookings group by Customer_ID order by total_rides desc limit 5;
+
+-- SELECT Customer_ID, COUNT(*) AS total_number_of_rides  
+-- FROM bookings  
+-- WHERE Booking_Status = 'Success'  
+-- GROUP BY Customer_ID  
+-- ORDER BY total_number_of_rides DESC  
+-- LIMIT 5;
+
+-- 5. Get the number of rides cancelled by drivers due to personal and car-related issues:
+select count(Canceled_Rides_by_Driver) as Canceled_Rides_by_Driver 
+from Bookings where Canceled_Rides_by_Driver = 'Personal & Car related issue';
+
+-- 6. Find the maximum and minimum driver ratings for Prime Sedan bookings:
+select max(Driver_Ratings) , min(Driver_Ratings) from bookings where Vehicle_Type = 'Prime Sedan';
+
+
+-- 7. Retrieve all rides where payment was made using UPI:
+select * from bookings where Payment_Method = 'UPI';
+
+
+-- 8. Find the average customer rating per vehicle type:
+select Vehicle_Type , round(avg(Customer_Rating),2) from bookings group by Vehicle_Type;
+
+
+-- 9. Calculate the total booking value of rides completed successfully:
+-- select sum(Booking_Value) from bookings group by Booking_Status having Booking_Status = 'Success';
+select sum(Booking_Value) from bookings where Booking_Status = 'Success';
+
+-- 10. List all incomplete rides along with the reason:
+select Booking_ID , Incomplete_Rides_Reason from bookings where Incomplete_Rides = 'Yes';
